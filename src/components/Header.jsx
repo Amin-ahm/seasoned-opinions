@@ -18,6 +18,7 @@ export function Header() {
             🧂
           </span>
           <span className="brand-name">Seasoned Opinions</span>
+          <span className="brand-by">by Read Team</span>
         </Link>
 
         <nav className={`main-nav ${menuOpen ? 'open' : ''}`}>

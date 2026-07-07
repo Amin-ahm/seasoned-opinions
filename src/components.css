@@ -75,6 +75,15 @@
   font-size: 1.2rem;
   letter-spacing: -0.01em;
 }
+.brand-by {
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--ink-faint);
+  margin-left: 2px;
+  align-self: flex-end;
+  padding-bottom: 3px;
+  white-space: nowrap;
+}
 .brand-lg .brand-emoji {
   font-size: 2.2rem;
 }
