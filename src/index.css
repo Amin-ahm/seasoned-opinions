@@ -1,0 +1,441 @@
+/* ============================================================
+   Seasoned Opinions - global styles & design system
+   Art direction: whimsical, cartoony, warm & friendly.
+   Mobile-first. All motion respects prefers-reduced-motion.
+   ============================================================ */
+
+:root {
+  /* Warm, saturated, friendly palette */
+  --cream: #fff8f0;
+  --cream-2: #fff1e2;
+  --ink: #3a2a20;
+  --ink-soft: #6b5545;
+  --ink-faint: #9a8474;
+
+  --orange: #ff7a45;
+  --orange-dark: #f2612c;
+  --orange-soft: #ffd9c4;
+
+  --berry: #ff5d8f;
+  --teal: #2ec4b6;
+  --teal-dark: #1fa093;
+  --sun: #ffc857;
+  --grape: #9b5de5;
+
+  --card: #ffffff;
+  --line: #f0e2d2;
+  --line-strong: #e6d3bd;
+
+  --good: #2ec4b6;
+  --skip: #ff6b6b;
+  --star: #ffb703;
+
+  /* Radii - chunky and rounded */
+  --r-sm: 10px;
+  --r-md: 16px;
+  --r-lg: 24px;
+  --r-xl: 32px;
+  --r-pill: 999px;
+
+  /* Soft, playful shadows */
+  --shadow-sm: 0 2px 6px rgba(120, 72, 40, 0.08);
+  --shadow-md: 0 8px 20px rgba(120, 72, 40, 0.12);
+  --shadow-lg: 0 18px 40px rgba(120, 72, 40, 0.18);
+  --shadow-pop: 0 6px 0 rgba(0, 0, 0, 0.08);
+
+  --font: 'Nunito', 'Baloo 2', system-ui, -apple-system, 'Segoe UI', Roboto,
+    sans-serif;
+
+  --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --header-h: 64px;
+
+  color-scheme: light;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font);
+  color: var(--ink);
+  background: var(--cream);
+  background-image: radial-gradient(
+      circle at 12% 18%,
+      rgba(255, 200, 87, 0.18),
+      transparent 40%
+    ),
+    radial-gradient(circle at 88% 8%, rgba(46, 196, 182, 0.14), transparent 42%),
+    radial-gradient(circle at 78% 92%, rgba(255, 93, 143, 0.12), transparent 45%);
+  background-attachment: fixed;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  line-height: 1.5;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  line-height: 1.15;
+  margin: 0 0 0.4em;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+}
+
+h1 {
+  font-size: clamp(1.9rem, 5vw, 3.2rem);
+}
+h2 {
+  font-size: clamp(1.4rem, 3.5vw, 2rem);
+}
+
+a {
+  color: var(--orange-dark);
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
+
+p {
+  margin: 0 0 1em;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+}
+
+:focus-visible {
+  outline: 3px solid var(--grape);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+/* ---------------- Layout ---------------- */
+.container {
+  width: 100%;
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+.page {
+  padding: 24px 0 80px;
+  min-height: calc(100vh - var(--header-h));
+}
+
+.section-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+/* ---------------- Buttons ---------------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: none;
+  border-radius: var(--r-pill);
+  padding: 12px 20px;
+  font-weight: 800;
+  font-size: 0.98rem;
+  background: var(--cream-2);
+  color: var(--ink);
+  transition: transform 0.14s var(--ease-bounce), box-shadow 0.14s ease,
+    background 0.14s ease;
+  box-shadow: var(--shadow-sm);
+  min-height: 44px;
+  text-decoration: none;
+}
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+  text-decoration: none;
+}
+.btn:active {
+  transform: translateY(0) scale(0.97);
+}
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+.btn-primary {
+  background: linear-gradient(180deg, var(--orange), var(--orange-dark));
+  color: #fff;
+}
+.btn-teal {
+  background: linear-gradient(180deg, var(--teal), var(--teal-dark));
+  color: #fff;
+}
+.btn-grape {
+  background: linear-gradient(180deg, #b57bef, var(--grape));
+  color: #fff;
+}
+.btn-ghost {
+  background: transparent;
+  box-shadow: none;
+  border: 2px solid var(--line-strong);
+}
+.btn-sm {
+  padding: 8px 14px;
+  font-size: 0.85rem;
+  min-height: 36px;
+}
+.btn-block {
+  width: 100%;
+}
+.btn-google {
+  background: #fff;
+  color: var(--ink);
+  border: 2px solid var(--line-strong);
+  font-size: 1.05rem;
+  padding: 14px 24px;
+}
+
+/* ---------------- Cards & chips ---------------- */
+.card {
+  background: var(--card);
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow-md);
+  border: 2px solid var(--line);
+  overflow: hidden;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 11px;
+  border-radius: var(--r-pill);
+  font-size: 0.78rem;
+  font-weight: 800;
+  background: var(--cream-2);
+  color: var(--ink-soft);
+  border: 1.5px solid var(--line-strong);
+  white-space: nowrap;
+}
+.chip-tag {
+  background: #eef7ff;
+  color: #3a7bd5;
+  border-color: #d5e8fb;
+}
+.chip-avail {
+  background: #eafaf3;
+  color: var(--teal-dark);
+  border-color: #c8f0e3;
+}
+.chip.is-active {
+  background: var(--orange);
+  color: #fff;
+  border-color: var(--orange-dark);
+}
+.chip button.chip.is-active,
+button.chip.is-active {
+  cursor: pointer;
+}
+
+.chip-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+/* ---------------- Forms ---------------- */
+.field {
+  margin-bottom: 16px;
+}
+.field label {
+  display: block;
+  font-weight: 800;
+  margin-bottom: 6px;
+  color: var(--ink);
+  font-size: 0.95rem;
+}
+.field .hint {
+  font-size: 0.8rem;
+  color: var(--ink-faint);
+  margin: 4px 0 0;
+}
+input[type='text'],
+input[type='url'],
+input[type='number'],
+input[type='search'],
+textarea,
+select {
+  width: 100%;
+  font-family: inherit;
+  font-size: 1rem;
+  padding: 12px 14px;
+  border-radius: var(--r-md);
+  border: 2px solid var(--line-strong);
+  background: #fff;
+  color: var(--ink);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+input:focus,
+textarea:focus,
+select:focus {
+  outline: none;
+  border-color: var(--orange);
+  box-shadow: 0 0 0 4px var(--orange-soft);
+}
+textarea {
+  resize: vertical;
+  min-height: 84px;
+}
+
+/* ---------------- Stars ---------------- */
+.stars {
+  display: inline-flex;
+  gap: 2px;
+  font-size: 1.1rem;
+  line-height: 1;
+  color: var(--star);
+}
+.stars .star-empty {
+  color: var(--line-strong);
+}
+.star-btn {
+  background: none;
+  border: none;
+  font-size: 1.8rem;
+  padding: 2px;
+  line-height: 1;
+  color: var(--line-strong);
+  transition: transform 0.12s var(--ease-bounce), color 0.12s ease;
+}
+.star-btn.on {
+  color: var(--star);
+}
+.star-btn:hover {
+  transform: scale(1.25) rotate(-6deg);
+}
+
+/* ---------------- Utility ---------------- */
+.muted {
+  color: var(--ink-faint);
+}
+.center {
+  text-align: center;
+}
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.row-wrap {
+  flex-wrap: wrap;
+}
+.spread {
+  justify-content: space-between;
+}
+.grow {
+  flex: 1;
+}
+.pill-price {
+  font-weight: 900;
+  color: var(--teal-dark);
+  letter-spacing: 1px;
+}
+.pill-price .off {
+  color: var(--line-strong);
+}
+.badge-score {
+  font-weight: 900;
+  color: var(--orange-dark);
+}
+
+.grid {
+  display: grid;
+  gap: 18px;
+  grid-template-columns: 1fr;
+}
+
+.skeleton {
+  background: linear-gradient(
+    100deg,
+    var(--cream-2) 30%,
+    #fff 50%,
+    var(--cream-2) 70%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.3s infinite linear;
+  border-radius: var(--r-md);
+}
+@keyframes shimmer {
+  to {
+    background-position: -200% 0;
+  }
+}
+
+.empty-state {
+  text-align: center;
+  padding: 48px 20px;
+  color: var(--ink-soft);
+}
+.empty-state .big {
+  font-size: 3.5rem;
+  margin-bottom: 8px;
+}
+
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: 24px;
+  transform: translateX(-50%);
+  background: var(--ink);
+  color: #fff;
+  padding: 12px 20px;
+  border-radius: var(--r-pill);
+  font-weight: 800;
+  box-shadow: var(--shadow-lg);
+  z-index: 3000;
+  max-width: 90vw;
+}
+
+/* ---------------- Responsive grid ---------------- */
+@media (min-width: 620px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (min-width: 940px) {
+  .grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* ---------------- Reduced motion ---------------- */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
