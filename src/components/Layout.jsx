@@ -10,9 +10,13 @@ export function Layout() {
   const { needsNickname } = useAuth()
   const [promptNick, setPromptNick] = useState(false)
 
-  // Gently invite new users to pick a nickname the first time (once).
+  // Invite the user to pick a nickname at most ONCE per browser — never nag on
+  // refresh. After that it's always available from the header chip.
   useEffect(() => {
-    if (needsNickname) setPromptNick(true)
+    if (!needsNickname) return
+    if (localStorage.getItem('so_nickname_prompted')) return
+    localStorage.setItem('so_nickname_prompted', '1')
+    setPromptNick(true)
   }, [needsNickname])
 
   return (

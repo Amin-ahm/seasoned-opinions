@@ -7,10 +7,10 @@
 :root {
   /* Warm, saturated, friendly palette */
   --cream: #fff8f0;
-  --cream-2: #fff1e2;
-  --ink: #3a2a20;
-  --ink-soft: #6b5545;
-  --ink-faint: #9a8474;
+  --cream-2: #fdeddc;
+  --ink: #34241a;
+  --ink-soft: #5c4636;
+  --ink-faint: #7a6350;
 
   --orange: #ff7a45;
   --orange-dark: #f2612c;
@@ -23,8 +23,8 @@
   --grape: #9b5de5;
 
   --card: #ffffff;
-  --line: #f0e2d2;
-  --line-strong: #e6d3bd;
+  --line: #f1e3d2;
+  --line-strong: #e2cdb4;
 
   --good: #2ec4b6;
   --skip: #ff6b6b;
@@ -43,8 +43,8 @@
   --shadow-lg: 0 18px 40px rgba(120, 72, 40, 0.18);
   --shadow-pop: 0 6px 0 rgba(0, 0, 0, 0.08);
 
-  --font: 'Nunito', 'Baloo 2', system-ui, -apple-system, 'Segoe UI', Roboto,
-    sans-serif;
+  --font: 'Nunito', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-display: 'Fredoka', 'Nunito', system-ui, sans-serif;
 
   --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
   --header-h: 64px;
@@ -84,17 +84,23 @@ h1,
 h2,
 h3,
 h4 {
-  line-height: 1.15;
+  font-family: var(--font-display);
+  line-height: 1.12;
   margin: 0 0 0.4em;
-  font-weight: 800;
-  letter-spacing: -0.01em;
+  font-weight: 600;
+  letter-spacing: -0.005em;
+  color: var(--ink);
 }
 
 h1 {
-  font-size: clamp(1.9rem, 5vw, 3.2rem);
+  font-size: clamp(2rem, 5vw, 3.3rem);
+  font-weight: 700;
 }
 h2 {
-  font-size: clamp(1.4rem, 3.5vw, 2rem);
+  font-size: clamp(1.45rem, 3.5vw, 2.1rem);
+}
+h3 {
+  font-size: 1.2rem;
 }
 
 a {
@@ -223,29 +229,42 @@ button {
   display: inline-flex;
   align-items: center;
   gap: 5px;
-  padding: 4px 11px;
+  padding: 5px 12px;
   border-radius: var(--r-pill);
-  font-size: 0.78rem;
-  font-weight: 800;
-  background: var(--cream-2);
-  color: var(--ink-soft);
+  font-size: 0.8rem;
+  font-weight: 700;
+  line-height: 1.3;
+  background: #fff;
+  color: var(--ink);
   border: 1.5px solid var(--line-strong);
   white-space: nowrap;
 }
 .chip-tag {
-  background: #eef7ff;
-  color: #3a7bd5;
-  border-color: #d5e8fb;
+  background: #fdece0;
+  color: #b8481a;
+  border-color: #f6d3bd;
 }
 .chip-avail {
-  background: #eafaf3;
-  color: var(--teal-dark);
-  border-color: #c8f0e3;
+  background: #e3f6ef;
+  color: #147a6e;
+  border-color: #bfe9dc;
 }
 .chip.is-active {
   background: var(--orange);
   color: #fff;
   border-color: var(--orange-dark);
+}
+button.chip {
+  cursor: pointer;
+  transition: transform 0.12s var(--ease-bounce), background 0.12s ease,
+    border-color 0.12s ease, color 0.12s ease;
+}
+button.chip:hover {
+  border-color: var(--orange);
+  color: var(--orange-dark);
+}
+button.chip.is-active:hover {
+  color: #fff;
 }
 .chip button.chip.is-active,
 button.chip.is-active {

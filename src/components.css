@@ -70,8 +70,10 @@
   font-size: 1.5rem;
 }
 .brand-name {
-  font-size: 1.1rem;
-  letter-spacing: -0.02em;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.2rem;
+  letter-spacing: -0.01em;
 }
 .brand-lg .brand-emoji {
   font-size: 2.2rem;
