@@ -3,7 +3,6 @@
 import { useState } from 'react'
 import {
   CATEGORIES,
-  AVAILABILITY,
   SUGGESTED_TAGS,
   SORT_OPTIONS,
   PRICE_LABELS,
@@ -74,23 +73,6 @@ export function FilterBar({ filters, setFilters, sortBy, setSortBy, allTags }) {
             setFilters((f) => ({ ...f, maxPrice: Number(e.target.value) }))
           }
         />
-      </div>
-
-      <div className="field">
-        <label>Availability</label>
-        <div className="chip-row">
-          {AVAILABILITY.map((a) => (
-            <button
-              key={a.value}
-              className={`chip ${
-                filters.availability.includes(a.value) ? 'is-active' : ''
-              }`}
-              onClick={() => toggleArray('availability', a.value)}
-            >
-              {a.emoji} {a.label}
-            </button>
-          ))}
-        </div>
       </div>
 
       <div className="field">

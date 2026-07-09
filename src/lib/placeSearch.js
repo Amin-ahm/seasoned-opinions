@@ -29,11 +29,9 @@ async function fromPhoton(q, signal) {
     if (!res.ok) return []
     const data = await res.json()
     const all = (data.features || []).map(fromPhotonFeature).filter((p) => p.name)
-    const inCountry = COUNTRY_CODES.length
-      ? all.filter((p) => COUNTRY_CODES.includes((p._cc || '').toLowerCase()))
-      : all
-    // If the country filter wiped everything out, show what we found anyway.
-    return inCountry.length ? inCountry : all
+    // Strict country limit: never surface out-of-country results.
+    if (!COUNTRY_CODES.length) return all
+    return all.filter((p) => COUNTRY_CODES.includes((p._cc || '').toLowerCase()))
   } catch {
     return []
   }
