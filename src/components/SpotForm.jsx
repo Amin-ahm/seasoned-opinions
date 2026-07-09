@@ -1,17 +1,22 @@
-// Shared form for adding and editing a spot. googleMaps link is auto-generated
-// from the address (never typed); lat/lng are geocoded on save by the caller.
+// Shared form for adding and editing a place. The place picker auto-fills the
+// name, address, and map location. googleMaps link is auto-generated from the
+// address; lat/lng come from the picker (or geocoding) on save.
 import { useState } from 'react'
 import {
   CATEGORIES,
   AVAILABILITY,
   SUGGESTED_TAGS,
   PRICE_LABELS,
+  isFoodCategory,
 } from '../lib/constants'
+import { PlacePicker } from './PlacePicker'
 
 const EMPTY = {
   name: '',
   category: 'restaurant',
   address: '',
+  lat: null,
+  lng: null,
   priceScale: 2,
   tags: [],
   availability: [],
@@ -21,12 +26,13 @@ const EMPTY = {
   photoUrl: '',
 }
 
-// Convert a stored spot (arrays) into form state (newline-joined text areas).
 export function spotToForm(spot) {
   return {
     name: spot.name || '',
     category: spot.category || 'restaurant',
     address: spot.address || '',
+    lat: Number.isFinite(spot.lat) ? spot.lat : null,
+    lng: Number.isFinite(spot.lng) ? spot.lng : null,
     priceScale: spot.priceScale || 2,
     tags: spot.tags || [],
     availability: spot.availability || [],
@@ -61,22 +67,31 @@ export function SpotForm({ initial, submitLabel = 'Add spot', onSubmit, busy }) 
     })
   }
 
+  function onPick(place) {
+    setForm((f) => ({
+      ...f,
+      name: f.name.trim() ? f.name : place.name,
+      address: place.address || f.address,
+      lat: place.lat,
+      lng: place.lng,
+      category:
+        place.category && place.category !== 'other' ? place.category : f.category,
+    }))
+  }
+
   function addCustomTag() {
     const t = customTag.trim().toLowerCase()
-    if (t && !form.tags.includes(t)) {
-      set('tags', [...form.tags, t])
-    }
+    if (t && !form.tags.includes(t)) set('tags', [...form.tags, t])
     setCustomTag('')
   }
 
   function handleSubmit(e) {
     e.preventDefault()
     const errs = {}
-    if (!form.name.trim()) errs.name = 'Give the spot a name.'
+    if (!form.name.trim()) errs.name = 'Give the place a name.'
     if (!form.address.trim()) errs.address = 'An address helps the map + links.'
     setErrors(errs)
     if (Object.keys(errs).length) return
-
     onSubmit({
       ...form,
       whatsGood: splitLines(form.whatsGood),
@@ -85,9 +100,20 @@ export function SpotForm({ initial, submitLabel = 'Add spot', onSubmit, busy }) 
   }
 
   const tagUniverse = Array.from(new Set([...SUGGESTED_TAGS, ...form.tags]))
+  const food = isFoodCategory(form.category)
+  const availOptions = food
+    ? AVAILABILITY
+    : AVAILABILITY.filter((a) => !['doordash', 'ubereats'].includes(a.value))
 
   return (
     <form onSubmit={handleSubmit} className="spot-form card">
+      <div className="field pick-field">
+        <label>🔎 Search for the place (easiest)</label>
+        <PlacePicker onSelect={onPick} />
+      </div>
+
+      <div className="or-divider"><span>or enter details manually</span></div>
+
       <div className="field">
         <label htmlFor="name">Name *</label>
         <input
@@ -122,11 +148,15 @@ export function SpotForm({ initial, submitLabel = 'Add spot', onSubmit, busy }) 
           id="address"
           type="text"
           value={form.address}
-          onChange={(e) => set('address', e.target.value)}
+          onChange={(e) =>
+            setForm((f) => ({ ...f, address: e.target.value, lat: null, lng: null }))
+          }
           placeholder="123 Main St, City"
         />
         <p className="hint">
-          We'll geocode this for the map and auto-generate the Google Maps link.
+          {Number.isFinite(form.lat)
+            ? '📍 Location set from your search.'
+            : "We'll look this up for the map and Google Maps link."}
         </p>
         {errors.address && <p className="hint error">{errors.address}</p>}
       </div>
@@ -153,7 +183,7 @@ export function SpotForm({ initial, submitLabel = 'Add spot', onSubmit, busy }) 
       <div className="field">
         <label>Availability</label>
         <div className="chip-row">
-          {AVAILABILITY.map((a) => (
+          {availOptions.map((a) => (
             <button
               type="button"
               key={a.value}
@@ -203,53 +233,63 @@ export function SpotForm({ initial, submitLabel = 'Add spot', onSubmit, busy }) 
 
       <div className="two-col">
         <div className="field">
-          <label htmlFor="good">What's good</label>
+          <label htmlFor="good">{food ? "What's good" : 'Highlights'}</label>
           <textarea
             id="good"
             value={form.whatsGood}
             onChange={(e) => set('whatsGood', e.target.value)}
-            placeholder="One item per line&#10;e.g. Carbonara&#10;Tiramisu"
+            placeholder={
+              food
+                ? 'One item per line&#10;e.g. Carbonara&#10;Tiramisu'
+                : 'One per line&#10;e.g. Fast, fair prices'
+            }
           />
-          <p className="hint">One menu winner per line.</p>
+          <p className="hint">One per line.</p>
         </div>
         <div className="field">
-          <label htmlFor="skip">What to skip</label>
+          <label htmlFor="skip">{food ? 'What to skip' : 'Heads-up'}</label>
           <textarea
             id="skip"
             value={form.whatToSkip}
             onChange={(e) => set('whatToSkip', e.target.value)}
-            placeholder="One item per line&#10;e.g. Sad side salad"
+            placeholder={
+              food
+                ? 'One item per line&#10;e.g. Sad side salad'
+                : 'One per line&#10;e.g. Cash only'
+            }
           />
-          <p className="hint">One menu dud per line.</p>
+          <p className="hint">One per line.</p>
         </div>
       </div>
 
-      <div className="two-col">
-        <div className="field">
-          <label htmlFor="dd">DoorDash link</label>
-          <input
-            id="dd"
-            type="url"
-            value={form.orderLinks.doordash}
-            onChange={(e) =>
-              set('orderLinks', { ...form.orderLinks, doordash: e.target.value })
-            }
-            placeholder="https://doordash.com/store/…"
-          />
+      {food && (
+        <div className="two-col">
+          <div className="field">
+            <label htmlFor="dd">DoorDash link</label>
+            <input
+              id="dd"
+              type="url"
+              value={form.orderLinks.doordash}
+              onChange={(e) =>
+                set('orderLinks', { ...form.orderLinks, doordash: e.target.value })
+              }
+              placeholder="https://doordash.com/store/…"
+            />
+          </div>
+          <div className="field">
+            <label htmlFor="ue">Uber Eats link</label>
+            <input
+              id="ue"
+              type="url"
+              value={form.orderLinks.ubereats}
+              onChange={(e) =>
+                set('orderLinks', { ...form.orderLinks, ubereats: e.target.value })
+              }
+              placeholder="https://ubereats.com/store/…"
+            />
+          </div>
         </div>
-        <div className="field">
-          <label htmlFor="ue">Uber Eats link</label>
-          <input
-            id="ue"
-            type="url"
-            value={form.orderLinks.ubereats}
-            onChange={(e) =>
-              set('orderLinks', { ...form.orderLinks, ubereats: e.target.value })
-            }
-            placeholder="https://ubereats.com/store/…"
-          />
-        </div>
-      </div>
+      )}
 
       <div className="field">
         <label htmlFor="photo">Photo URL</label>

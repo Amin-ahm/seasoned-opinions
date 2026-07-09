@@ -52,6 +52,41 @@ service cloud.firestore {
       }
     }
 
+    // ---- Non-place sections: market, tools (software & skills), news ----
+    // Same model as spots: owner does full edits; any signed-in user may touch
+    // only the denormalized counters; votes/ratings/comments keyed by uid.
+    // Scoped to these three collection names at every level so this never
+    // overlaps the dedicated /users, /spots, or /reports rules.
+    function isSection(name) {
+      return name in ['market', 'tools', 'news'];
+    }
+
+    match /{section}/{item} {
+      allow read: if signedIn() && isSection(section);
+      allow create: if signedIn() && isSection(section)
+        && request.resource.data.createdBy == request.auth.uid;
+      allow update: if signedIn() && isSection(section)
+        && (resource.data.createdBy == request.auth.uid || onlyCountersChanged());
+      allow delete: if signedIn() && isSection(section)
+        && resource.data.createdBy == request.auth.uid;
+
+      match /comments/{c} {
+        allow read: if signedIn() && isSection(section);
+        allow create: if signedIn() && isSection(section)
+          && request.resource.data.authorId == request.auth.uid;
+        allow delete: if signedIn() && isSection(section)
+          && resource.data.authorId == request.auth.uid;
+      }
+      match /votes/{uid} {
+        allow read: if signedIn() && isSection(section);
+        allow write: if request.auth.uid == uid && isSection(section);
+      }
+      match /ratings/{uid} {
+        allow read: if signedIn() && isSection(section);
+        allow write: if request.auth.uid == uid && isSection(section);
+      }
+    }
+
     match /reports/{report} {
       allow create: if signedIn()
         && request.resource.data.reportedBy == request.auth.uid;

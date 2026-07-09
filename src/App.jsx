@@ -8,6 +8,9 @@ import { AddSpot } from './pages/AddSpot'
 import { EditSpot } from './pages/EditSpot'
 import { MapView } from './pages/MapView'
 import { DecideForMe } from './pages/DecideForMe'
+import { SectionList } from './pages/SectionList'
+import { SectionDetail } from './pages/SectionDetail'
+import { SectionEditor } from './pages/SectionEditor'
 import { Privacy } from './pages/Privacy'
 import { Terms } from './pages/Terms'
 import { NotFound } from './pages/NotFound'
@@ -43,6 +46,10 @@ export default function App() {
             <Route path="/add" element={<AddSpot />} />
             <Route path="/map" element={<MapView />} />
             <Route path="/decide" element={<DecideForMe />} />
+            <Route path="/s/:section" element={<SectionList />} />
+            <Route path="/s/:section/add" element={<SectionEditor mode="add" />} />
+            <Route path="/s/:section/:id" element={<SectionDetail />} />
+            <Route path="/s/:section/:id/edit" element={<SectionEditor mode="edit" />} />
             <Route path="/privacy" element={<Privacy />} />
             <Route path="/terms" element={<Terms />} />
             <Route path="*" element={<NotFound />} />

@@ -5,13 +5,15 @@ import { db } from '../firebase'
 
 export async function reportContent({
   targetType, // "spot" | "comment"
-  spotId,
+  spotId, // the item id being reported (any section)
   commentId,
   reason,
   user,
+  collection: col = 'spots', // which collection the item lives in
 }) {
   const payload = {
     targetType,
+    collection: col,
     spotId,
     reason: (reason || '').trim() || 'No reason given',
     reportedBy: user.uid,

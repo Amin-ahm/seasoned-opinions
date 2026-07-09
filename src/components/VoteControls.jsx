@@ -8,7 +8,7 @@ import { useAuth } from '../context/AuthContext'
 import { useToast } from '../context/ToastContext'
 import { useReducedMotion } from '../hooks/useReducedMotion'
 
-export function VoteControls({ spotId, score = 0, size = 'md' }) {
+export function VoteControls({ spotId, score = 0, size = 'md', col = 'spots' }) {
   const { user } = useAuth()
   const { showToast } = useToast()
   const reduced = useReducedMotion()
@@ -18,9 +18,9 @@ export function VoteControls({ spotId, score = 0, size = 'md' }) {
 
   useEffect(() => {
     if (!user) return
-    const unsub = subscribeMyVote(spotId, user.uid, setMyVote)
+    const unsub = subscribeMyVote(spotId, user.uid, setMyVote, col)
     return unsub
-  }, [spotId, user])
+  }, [spotId, user, col])
 
   useGSAP(
     () => {
@@ -38,7 +38,7 @@ export function VoteControls({ spotId, score = 0, size = 'md' }) {
     if (!user || busy) return
     setBusy(true)
     try {
-      await castVote(spotId, user.uid, value)
+      await castVote(spotId, user.uid, value, col)
     } catch (e) {
       showToast('Could not save your vote. Try again.')
     } finally {

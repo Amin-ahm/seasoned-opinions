@@ -5,7 +5,7 @@ import { reportContent } from '../lib/reports'
 import { useAuth } from '../context/AuthContext'
 import { useToast } from '../context/ToastContext'
 
-export function ReportButton({ targetType, spotId, commentId, compact }) {
+export function ReportButton({ targetType, spotId, commentId, compact, col = 'spots' }) {
   const { user } = useAuth()
   const { showToast } = useToast()
   const [open, setOpen] = useState(false)
@@ -17,7 +17,7 @@ export function ReportButton({ targetType, spotId, commentId, compact }) {
     if (busy) return
     setBusy(true)
     try {
-      await reportContent({ targetType, spotId, commentId, reason, user })
+      await reportContent({ targetType, spotId, commentId, reason, user, collection: col })
       showToast('Thanks - this has been flagged for review.')
       setOpen(false)
       setReason('')

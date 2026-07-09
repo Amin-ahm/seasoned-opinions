@@ -1,7 +1,9 @@
-// Votes, ratings and comments.
+// Votes, ratings and comments — shared across every section (places, market,
+// software, news) by passing the parent collection name (`col`). Defaults to
+// 'spots' so the original Places code keeps working unchanged.
 //
 // One vote and one rating per person, enforced by keying the docs to the
-// user's uid. The parent spot's denormalized counters (voteScore, avgRating,
+// user's uid. The parent item's denormalized counters (voteScore, avgRating,
 // ratingCount) are updated in the SAME transaction, so no Cloud Function
 // (and therefore no billing) is needed.
 import {
@@ -20,17 +22,13 @@ import { db } from '../firebase'
 
 /* ----------------------------- Votes ----------------------------- */
 
-/**
- * Cast (or toggle) a vote. `value` is 1 or -1. Clicking the current vote
- * again removes it. Updates spot.voteScore atomically.
- */
-export async function castVote(spotId, uid, value) {
-  const spotRef = doc(db, 'spots', spotId)
-  const voteRef = doc(db, 'spots', spotId, 'votes', uid)
+export async function castVote(itemId, uid, value, col = 'spots') {
+  const itemRef = doc(db, col, itemId)
+  const voteRef = doc(db, col, itemId, 'votes', uid)
 
   await runTransaction(db, async (tx) => {
-    const spotSnap = await tx.get(spotRef)
-    if (!spotSnap.exists()) throw new Error('Spot no longer exists')
+    const snap = await tx.get(itemRef)
+    if (!snap.exists()) throw new Error('Item no longer exists')
     const voteSnap = await tx.get(voteRef)
 
     const oldValue = voteSnap.exists() ? voteSnap.data().value : 0
@@ -38,41 +36,33 @@ export async function castVote(spotId, uid, value) {
     const newValue = toggleOff ? 0 : value
     const delta = newValue - oldValue
 
-    const currentScore = spotSnap.data().voteScore || 0
-    tx.update(spotRef, { voteScore: currentScore + delta })
+    const currentScore = snap.data().voteScore || 0
+    tx.update(itemRef, { voteScore: currentScore + delta })
 
-    if (toggleOff) {
-      tx.delete(voteRef)
-    } else {
-      tx.set(voteRef, { value: newValue })
-    }
+    if (toggleOff) tx.delete(voteRef)
+    else tx.set(voteRef, { value: newValue })
   })
 }
 
-export function subscribeMyVote(spotId, uid, cb) {
-  const voteRef = doc(db, 'spots', spotId, 'votes', uid)
-  return onSnapshot(voteRef, (snap) =>
+export function subscribeMyVote(itemId, uid, cb, col = 'spots') {
+  return onSnapshot(doc(db, col, itemId, 'votes', uid), (snap) =>
     cb(snap.exists() ? snap.data().value : 0)
   )
 }
 
 /* ----------------------------- Ratings ----------------------------- */
 
-/**
- * Set the current user's star rating (1–5). Recomputes avgRating and
- * ratingCount on the parent spot atomically.
- */
-export async function setRating(spotId, uid, stars) {
+export async function setRating(itemId, uid, stars, col = 'spots') {
   const clamped = Math.max(1, Math.min(5, Math.round(stars)))
-  const spotRef = doc(db, 'spots', spotId)
-  const ratingRef = doc(db, 'spots', spotId, 'ratings', uid)
+  const itemRef = doc(db, col, itemId)
+  const ratingRef = doc(db, col, itemId, 'ratings', uid)
 
   await runTransaction(db, async (tx) => {
-    const spotSnap = await tx.get(spotRef)
-    if (!spotSnap.exists()) throw new Error('Spot no longer exists')
+    const snap = await tx.get(itemRef)
+    if (!snap.exists()) throw new Error('Item no longer exists')
     const ratingSnap = await tx.get(ratingRef)
 
-    const data = spotSnap.data()
+    const data = snap.data()
     const count = data.ratingCount || 0
     const avg = data.avgRating || 0
     const total = avg * count
@@ -90,31 +80,30 @@ export async function setRating(spotId, uid, stars) {
     const newAvg = newCount > 0 ? newTotal / newCount : 0
 
     tx.set(ratingRef, { stars: clamped })
-    tx.update(spotRef, {
+    tx.update(itemRef, {
       ratingCount: newCount,
       avgRating: Math.round(newAvg * 100) / 100,
     })
   })
 }
 
-export function subscribeMyRating(spotId, uid, cb) {
-  const ratingRef = doc(db, 'spots', spotId, 'ratings', uid)
-  return onSnapshot(ratingRef, (snap) =>
+export function subscribeMyRating(itemId, uid, cb, col = 'spots') {
+  return onSnapshot(doc(db, col, itemId, 'ratings', uid), (snap) =>
     cb(snap.exists() ? snap.data().stars : 0)
   )
 }
 
-/** For "Something New" mode - which spots has this user already rated? */
-export async function hasUserRated(spotId, uid) {
-  const snap = await getDoc(doc(db, 'spots', spotId, 'ratings', uid))
+/** For "Something New" mode — which items has this user already rated? */
+export async function hasUserRated(itemId, uid, col = 'spots') {
+  const snap = await getDoc(doc(db, col, itemId, 'ratings', uid))
   return snap.exists()
 }
 
 /* ----------------------------- Comments ----------------------------- */
 
-export function subscribeComments(spotId, cb, onError) {
+export function subscribeComments(itemId, cb, onError, col = 'spots') {
   const q = query(
-    collection(db, 'spots', spotId, 'comments'),
+    collection(db, col, itemId, 'comments'),
     orderBy('createdAt', 'desc')
   )
   return onSnapshot(
@@ -124,10 +113,10 @@ export function subscribeComments(spotId, cb, onError) {
   )
 }
 
-export async function addComment(spotId, user, text) {
+export async function addComment(itemId, user, text, col = 'spots') {
   const clean = text.trim()
   if (!clean) return
-  await addDoc(collection(db, 'spots', spotId, 'comments'), {
+  await addDoc(collection(db, col, itemId, 'comments'), {
     text: clean,
     authorId: user.uid,
     authorName: user.displayName || 'Anonymous',
@@ -135,6 +124,6 @@ export async function addComment(spotId, user, text) {
   })
 }
 
-export async function deleteComment(spotId, commentId) {
-  await deleteDoc(doc(db, 'spots', spotId, 'comments', commentId))
+export async function deleteComment(itemId, commentId, col = 'spots') {
+  await deleteDoc(doc(db, col, itemId, 'comments', commentId))
 }

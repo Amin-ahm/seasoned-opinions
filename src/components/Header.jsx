@@ -2,6 +2,7 @@ import { Link, NavLink } from 'react-router-dom'
 import { useState } from 'react'
 import { useAuth } from '../context/AuthContext'
 import { NicknameModal } from './NicknameModal'
+import { SECTION_LIST } from '../lib/sections'
 
 export function Header() {
   const { user, displayName, signOut } = useAuth()
@@ -23,20 +24,18 @@ export function Header() {
 
         <nav className={`main-nav ${menuOpen ? 'open' : ''}`}>
           <NavLink to="/" end onClick={() => setMenuOpen(false)}>
-            Spots
+            Places
           </NavLink>
+          {SECTION_LIST.map((s) => (
+            <NavLink key={s.key} to={`/s/${s.key}`} onClick={() => setMenuOpen(false)}>
+              {s.navLabel || s.label}
+            </NavLink>
+          ))}
           <NavLink to="/map" onClick={() => setMenuOpen(false)}>
             Map
           </NavLink>
           <NavLink to="/decide" onClick={() => setMenuOpen(false)}>
-            Decide for Me
-          </NavLink>
-          <NavLink
-            to="/add"
-            className="nav-add"
-            onClick={() => setMenuOpen(false)}
-          >
-            ＋ Add a Spot
+            Decide
           </NavLink>
           {/* Nickname entry inside the mobile dropdown */}
           <button

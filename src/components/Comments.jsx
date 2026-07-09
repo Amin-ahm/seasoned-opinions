@@ -11,7 +11,7 @@ import { ReportButton } from './ReportButton'
 import { Spinner } from './bits'
 import { formatWhen } from '../lib/time'
 
-export function Comments({ spotId }) {
+export function Comments({ spotId, col = 'spots' }) {
   const { user, displayName } = useAuth()
   const { showToast } = useToast()
   const [comments, setComments] = useState(null)
@@ -22,17 +22,18 @@ export function Comments({ spotId }) {
     const unsub = subscribeComments(
       spotId,
       setComments,
-      () => setComments([])
+      () => setComments([]),
+      col
     )
     return unsub
-  }, [spotId])
+  }, [spotId, col])
 
   async function submit(e) {
     e.preventDefault()
     if (!text.trim() || busy) return
     setBusy(true)
     try {
-      await addComment(spotId, { uid: user.uid, displayName }, text)
+      await addComment(spotId, { uid: user.uid, displayName }, text, col)
       setText('')
     } catch {
       showToast('Could not post your comment.')
@@ -43,7 +44,7 @@ export function Comments({ spotId }) {
 
   async function remove(id) {
     try {
-      await deleteComment(spotId, id)
+      await deleteComment(spotId, id, col)
     } catch {
       showToast('Could not delete the comment.')
     }
@@ -100,6 +101,7 @@ export function Comments({ spotId }) {
                   targetType="comment"
                   spotId={spotId}
                   commentId={c.id}
+                  col={col}
                   compact
                 />
               </div>

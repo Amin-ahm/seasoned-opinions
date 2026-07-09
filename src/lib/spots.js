@@ -55,7 +55,11 @@ export async function geocodeAddress(address) {
  * `data` should already be validated/cleaned by the form.
  */
 export async function createSpot(data, user) {
-  const geo = await geocodeAddress(data.address)
+  // Prefer coordinates chosen via the place picker; otherwise geocode.
+  const geo =
+    Number.isFinite(data.lat) && Number.isFinite(data.lng)
+      ? { lat: data.lat, lng: data.lng }
+      : await geocodeAddress(data.address)
 
   const orderLinks = {}
   if (data.orderLinks?.doordash)
@@ -100,8 +104,11 @@ export async function updateSpot(spotId, data) {
   const gmaps = mapsSearchUrl(data.address)
   if (gmaps) orderLinks.googleMaps = gmaps
 
-  // Re-geocode in case the address changed.
-  const geo = await geocodeAddress(data.address)
+  // Prefer picker coordinates; otherwise re-geocode in case the address changed.
+  const geo =
+    Number.isFinite(data.lat) && Number.isFinite(data.lng)
+      ? { lat: data.lat, lng: data.lng }
+      : await geocodeAddress(data.address)
 
   await updateDoc(doc(db, 'spots', spotId), {
     name: data.name.trim(),

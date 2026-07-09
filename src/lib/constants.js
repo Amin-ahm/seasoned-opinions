@@ -4,8 +4,22 @@ export const CATEGORIES = [
   { value: 'restaurant', label: 'Restaurant', emoji: '🍜' },
   { value: 'coffee', label: 'Coffee', emoji: '☕' },
   { value: 'bakery', label: 'Bakery', emoji: '🥐' },
-  { value: 'other', label: 'Other', emoji: '🍽️' },
+  { value: 'mechanic', label: 'Mechanic', emoji: '🔧' },
+  { value: 'fishing', label: 'Fishing spot', emoji: '🎣' },
+  { value: 'flowers', label: 'Flower shop', emoji: '💐' },
+  { value: 'farmer', label: 'Farmer / market', emoji: '🌾' },
+  { value: 'grocery', label: 'Grocery', emoji: '🛒' },
+  { value: 'services', label: 'Services', emoji: '🛠️' },
+  { value: 'other', label: 'Other', emoji: '📍' },
 ]
+
+// Food places show menu-style fields (what's good/skip) and food ordering
+// options; other place types hide those.
+export const FOOD_CATEGORIES = ['restaurant', 'coffee', 'bakery']
+
+export function isFoodCategory(value) {
+  return FOOD_CATEGORIES.includes(value)
+}
 
 export const CATEGORY_MAP = Object.fromEntries(
   CATEGORIES.map((c) => [c.value, c])

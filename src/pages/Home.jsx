@@ -7,6 +7,7 @@ import { useReducedMotion } from '../hooks/useReducedMotion'
 import { SpotCard } from '../components/SpotCard'
 import { FilterBar } from '../components/FilterBar'
 import { SpotCardSkeleton, EmptyState } from '../components/bits'
+import { SECTION_LIST } from '../lib/sections'
 import {
   DEFAULT_FILTERS,
   filterSpots,
@@ -68,9 +69,9 @@ export function Home() {
         <div className="home-hero-text">
           <h1>Good taste, crowdsourced.</h1>
           <p className="muted">
-            Real opinions from your coworkers on where to eat, sip, and snack.
-            Rate the winners, warn about the duds, and let the wheel decide when
-            you can't.
+            Real opinions from your coworkers — restaurants, coffee, bakeries,
+            mechanics, fishing spots, flower shops, and more. Rate the winners,
+            warn about the duds, and let the wheel decide when you can't.
           </p>
           <div className="row row-wrap" style={{ gap: 10 }}>
             <Link to="/add" className="btn btn-primary">
@@ -88,6 +89,18 @@ export function Home() {
             </Suspense>
           )}
         </div>
+      </section>
+
+      <section className="explore-strip">
+        {SECTION_LIST.map((s) => (
+          <Link key={s.key} to={`/s/${s.key}`} className="explore-pill">
+            <span className="explore-emoji" aria-hidden="true">{s.emoji}</span>
+            <span>
+              <strong>{s.label}</strong>
+              <span className="muted explore-sub">{s.tagline}</span>
+            </span>
+          </Link>
+        ))}
       </section>
 
       {trending.length > 0 && (
