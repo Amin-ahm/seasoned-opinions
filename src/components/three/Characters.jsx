@@ -27,13 +27,13 @@ export function Pin(props) {
   return (
     <group {...props}>
       <Sphere args={[0.5, 24, 24]} position={[0, 0.2, 0]}>
-        <meshStandardMaterial color="#ff5d8f" roughness={0.45} />
+        <meshStandardMaterial color="#f24d1e" roughness={0.45} />
       </Sphere>
       <Cone args={[0.42, 0.7, 24]} position={[0, -0.42, 0]} rotation={[Math.PI, 0, 0]}>
-        <meshStandardMaterial color="#ff5d8f" roughness={0.45} />
+        <meshStandardMaterial color="#f24d1e" roughness={0.45} />
       </Cone>
       <Sphere args={[0.18, 20, 20]} position={[0, 0.25, 0.34]}>
-        <meshStandardMaterial color="#fff1e2" roughness={0.4} />
+        <meshStandardMaterial color="#ffffff" roughness={0.4} />
       </Sphere>
     </group>
   )
@@ -44,10 +44,10 @@ export function ChatBubble(props) {
   return (
     <group {...props}>
       <RoundedBox args={[1.3, 0.95, 0.5]} radius={0.22} smoothness={4}>
-        <meshStandardMaterial color="#ff7a45" roughness={0.5} />
+        <meshStandardMaterial color="#f24d1e" roughness={0.5} />
       </RoundedBox>
       <Cone args={[0.22, 0.4, 4]} position={[-0.35, -0.6, 0]} rotation={[0, Math.PI / 4, 0.4]}>
-        <meshStandardMaterial color="#ff7a45" roughness={0.5} />
+        <meshStandardMaterial color="#f24d1e" roughness={0.5} />
       </Cone>
       {/* three little dots */}
       {[-0.32, 0, 0.32].map((x) => (
@@ -79,13 +79,13 @@ export function Heart(props) {
   return (
     <group {...props} rotation={[0, 0, Math.PI]}>
       <Cone args={[0.62, 1, 24]} position={[0, 0.28, 0]}>
-        <meshStandardMaterial color="#ff5d8f" roughness={0.5} />
+        <meshStandardMaterial color="#e11d48" roughness={0.5} />
       </Cone>
       <Sphere args={[0.33, 20, 20]} position={[-0.3, -0.28, 0]}>
-        <meshStandardMaterial color="#ff5d8f" roughness={0.5} />
+        <meshStandardMaterial color="#e11d48" roughness={0.5} />
       </Sphere>
       <Sphere args={[0.33, 20, 20]} position={[0.3, -0.28, 0]}>
-        <meshStandardMaterial color="#ff5d8f" roughness={0.5} />
+        <meshStandardMaterial color="#e11d48" roughness={0.5} />
       </Sphere>
     </group>
   )
@@ -96,7 +96,7 @@ export function Gem(props) {
   return (
     <group {...props}>
       <Octahedron args={[0.6, 0]}>
-        <meshStandardMaterial color="#2ec4b6" roughness={0.25} metalness={0.2} flatShading />
+        <meshStandardMaterial color="#0d9488" roughness={0.25} metalness={0.2} flatShading />
       </Octahedron>
       <Eyes y={0.05} z={0.42} spread={0.15} scale={0.8} />
     </group>

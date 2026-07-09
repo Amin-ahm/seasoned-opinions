@@ -7,12 +7,12 @@ import { Text, RoundedBox, Cylinder, Cone } from '@react-three/drei'
 import gsap from 'gsap'
 
 const PALETTE = [
-  '#ff7a45',
-  '#2ec4b6',
-  '#ffc857',
-  '#ff5d8f',
-  '#9b5de5',
-  '#57b04a',
+  '#f24d1e',
+  '#0d9488',
+  '#f59e0b',
+  '#4f46e5',
+  '#16a34a',
+  '#2563eb',
 ]
 
 function truncate(str, n = 14) {

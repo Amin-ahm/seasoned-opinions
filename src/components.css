@@ -44,9 +44,9 @@
   position: sticky;
   top: 0;
   z-index: 900;
-  background: rgba(255, 248, 240, 0.85);
+  background: rgba(255, 255, 255, 0.85);
   backdrop-filter: blur(10px);
-  border-bottom: 2px solid var(--line);
+  border-bottom: 1px solid var(--line-strong);
 }
 .header-inner {
   display: flex;
@@ -200,8 +200,8 @@
 
 /* ---------------- Footer ---------------- */
 .site-footer {
-  border-top: 2px solid var(--line);
-  background: rgba(255, 241, 226, 0.6);
+  border-top: 1px solid var(--line-strong);
+  background: #ffffff;
   padding: 20px 0;
   margin-top: 40px;
 }
@@ -703,7 +703,7 @@
 }
 .decide-mode.selected {
   border-color: var(--grape);
-  box-shadow: 0 0 0 4px rgba(155, 93, 229, 0.18);
+  box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.2);
 }
 .decide-mode-label {
   font-weight: 900;

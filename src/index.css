@@ -1,46 +1,48 @@
 /* ============================================================
    Seasoned Opinions, global styles and design system
-   Art direction: whimsical, cartoony, warm & friendly.
+   Art direction: clean, high-contrast, friendly (not pastel).
    Mobile-first. All motion respects prefers-reduced-motion.
    ============================================================ */
 
 :root {
-  /* Warm, saturated, friendly palette */
-  --cream: #fff8f0;
-  --cream-2: #fdeddc;
-  --ink: #34241a;
-  --ink-soft: #5c4636;
-  --ink-faint: #7a6350;
+  /* Neutral surfaces for high contrast against dark text + white cards */
+  --cream: #eceef2; /* page background (kept name for existing refs) */
+  --cream-2: #eef0f4; /* subtle fill (buttons, chips, drawers) */
+  --ink: #14161b; /* near-black text */
+  --ink-soft: #3d424b;
+  --ink-faint: #656b76;
 
-  --orange: #ff7a45;
-  --orange-dark: #f2612c;
-  --orange-soft: #ffd9c4;
+  /* Accents: punchy, high-contrast, no pink */
+  --orange: #f24d1e;
+  --orange-dark: #d43c11;
+  --orange-soft: #ffd7c7;
 
-  --berry: #ff5d8f;
-  --teal: #2ec4b6;
-  --teal-dark: #1fa093;
-  --sun: #ffc857;
-  --grape: #9b5de5;
+  --berry: #4f46e5; /* de-pinked, now indigo */
+  --teal: #0d9488;
+  --teal-dark: #0a7268;
+  --sun: #f59e0b;
+  --grape: #4f46e5; /* indigo (Decide) */
+  --grape-dark: #4338ca;
 
   --card: #ffffff;
-  --line: #f1e3d2;
-  --line-strong: #e2cdb4;
+  --line: #e2e5ea;
+  --line-strong: #ccd1da;
 
-  --good: #2ec4b6;
-  --skip: #ff6b6b;
-  --star: #ffb703;
+  --good: #12855f;
+  --skip: #dc2b2b;
+  --star: #f59e0b;
 
   /* Radii, chunky and rounded */
   --r-sm: 10px;
-  --r-md: 16px;
-  --r-lg: 24px;
-  --r-xl: 32px;
+  --r-md: 14px;
+  --r-lg: 20px;
+  --r-xl: 28px;
   --r-pill: 999px;
 
-  /* Soft, playful shadows */
-  --shadow-sm: 0 2px 6px rgba(120, 72, 40, 0.08);
-  --shadow-md: 0 8px 20px rgba(120, 72, 40, 0.12);
-  --shadow-lg: 0 18px 40px rgba(120, 72, 40, 0.18);
+  /* Neutral, defined shadows */
+  --shadow-sm: 0 1px 2px rgba(16, 20, 30, 0.06), 0 1px 3px rgba(16, 20, 30, 0.08);
+  --shadow-md: 0 4px 6px rgba(16, 20, 30, 0.06), 0 10px 24px rgba(16, 20, 30, 0.1);
+  --shadow-lg: 0 18px 44px rgba(16, 20, 30, 0.18);
   --shadow-pop: 0 6px 0 rgba(0, 0, 0, 0.08);
 
   --font: 'Nunito', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
@@ -66,13 +68,7 @@ body {
   font-family: var(--font);
   color: var(--ink);
   background: var(--cream);
-  background-image: radial-gradient(
-      circle at 12% 18%,
-      rgba(255, 200, 87, 0.18),
-      transparent 40%
-    ),
-    radial-gradient(circle at 88% 8%, rgba(46, 196, 182, 0.14), transparent 42%),
-    radial-gradient(circle at 78% 92%, rgba(255, 93, 143, 0.12), transparent 45%);
+  background-image: linear-gradient(180deg, #f3f5f8 0%, var(--cream) 260px);
   background-attachment: fixed;
   min-height: 100vh;
   -webkit-font-smoothing: antialiased;
@@ -192,7 +188,7 @@ button {
   color: #fff;
 }
 .btn-grape {
-  background: linear-gradient(180deg, #b57bef, var(--grape));
+  background: linear-gradient(180deg, #6366f1, var(--grape-dark));
   color: #fff;
 }
 .btn-ghost {
@@ -221,7 +217,7 @@ button {
   background: var(--card);
   border-radius: var(--r-lg);
   box-shadow: var(--shadow-md);
-  border: 2px solid var(--line);
+  border: 1px solid var(--line);
   overflow: hidden;
 }
 
