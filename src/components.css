@@ -456,7 +456,7 @@
   display: grid;
   place-content: center;
   font-size: 3.4rem;
-  background: linear-gradient(135deg, var(--cream-2), var(--orange-soft));
+  background: linear-gradient(135deg, #f3f4f6, #e7e9ee);
 }
 .spot-card-body {
   padding: 14px 16px 18px;

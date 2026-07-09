@@ -47,7 +47,7 @@ export const SECTIONS = {
     label: 'Software & Skills',
     navLabel: 'Software',
     singular: 'tool',
-    emoji: '🧠',
+    emoji: '💻',
     tagline: 'Apps, tools, and agent skills your coworkers swear by.',
     addCta: 'Share a tool',
     hasRating: true,
