@@ -18,7 +18,7 @@ export function ReportButton({ targetType, spotId, commentId, compact, col = 'sp
     setBusy(true)
     try {
       await reportContent({ targetType, spotId, commentId, reason, user, collection: col })
-      showToast('Thanks - this has been flagged for review.')
+      showToast('Thanks! This has been flagged for review.')
       setOpen(false)
       setReason('')
     } catch {

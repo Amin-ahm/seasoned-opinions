@@ -76,7 +76,7 @@ export function Comments({ spotId, col = 'spots' }) {
       {comments === null ? (
         <Spinner label="Loading comments…" />
       ) : comments.length === 0 ? (
-        <p className="muted">No comments yet - be the first!</p>
+        <p className="muted">No comments yet. Be the first!</p>
       ) : (
         <ul className="comment-list">
           {comments.map((c) => (

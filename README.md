@@ -1,18 +1,19 @@
-# 🧂 Seasoned Opinions
+# 💬 Seasoned Opinions
 
-A crowdsourced guide where coworkers share and rate nearby restaurants, coffee
-shops, and bakeries. Star ratings, a price scale, honest "what's good / what to
-skip" breakdowns, tags, ways to order (dine-in / pickup / DoorDash / Uber Eats /
-delivery) with direct links, Google Maps links, comments, a **"Decide for Me"**
-random picker with a 3D spinning wheel, and a map of every spot.
+A crowdsourced guide where coworkers share and rate the things worth knowing
+about, organized into sections: **Places** (restaurants, coffee, services,
+mechanics, and more, with a map + place search), a **Marketplace** for coworker
+side hustles, **Software & Skills**, and **News**. Star ratings, upvotes,
+comments, tags, a **"Decide for Me"** picker with a 3D spinning wheel, and a map
+of every place.
 
 The entire site is gated behind **Google sign-in**. Any Google account can join.
 
 ## Tech stack
 
 - **Vite + React** (JavaScript)
-- **React Router** with **hash routing** (works on GitHub Pages - no server rewrites)
-- **Firebase** - Firestore + Auth (Google provider only)
+- **React Router** with **hash routing** (works on GitHub Pages, no server rewrites)
+- **Firebase**, Firestore + Auth (Google provider only)
 - **Leaflet + react-leaflet** with OpenStreetMap tiles (no API key, no billing)
 - **Google Maps via plain URLs** (no Maps JS API, no billing)
 - **three.js** via `@react-three/fiber` + `@react-three/drei` for the 3D scenes
@@ -21,7 +22,7 @@ The entire site is gated behind **Google sign-in**. Any Google account can join.
 - Deployed to **GitHub Pages** via GitHub Actions
 
 Everything runs on **free tiers with no billing account**. The only thing that
-would require billing is real photo file uploads (Firebase Storage) - which this
+would require billing is real photo file uploads (Firebase Storage), which this
 app deliberately avoids by using pasted image URLs.
 
 ## Local development
@@ -35,7 +36,7 @@ npm run preview  # preview the production build
 
 ## Firebase setup
 
-The Firebase web config is read from `VITE_FIREBASE_*` env vars — it is never
+The Firebase web config is read from `VITE_FIREBASE_*` env vars, it is never
 hardcoded in the source. (A web app's config is still visible in the shipped JS
 bundle; env vars just keep it out of the repo. Real security comes from the
 Firestore rules and the Auth authorized-domains list.)
@@ -119,10 +120,10 @@ reports/{reportId}               { targetType, spotId, commentId?, reason,
 
 ## Notes on content & photos
 
-- Photos are **pasted image URLs only** - no file uploads. Users are responsible
+- Photos are **pasted image URLs only**, no file uploads. Users are responsible
   for having the rights to any image URL they submit (see the in-app Terms).
 - The app never scrapes or displays images from Google Maps, DoorDash, or Uber
-  Eats - it only ever renders those as clickable "Open / Order" links.
+  Eats, it only ever renders those as clickable "Open / Order" links.
 - A lightweight **Report** action on spots and comments writes a `reports` doc
   for the owner to review in the Firebase console.
 
@@ -130,5 +131,5 @@ reports/{reportId}               { targetType, spotId, commentId?, reason,
 
 `#/privacy` and `#/terms` are real, readable starter templates with clearly
 marked placeholders (`[CONTACT EMAIL]`, `[SITE OWNER / ENTITY NAME]`,
-`[GOVERNING JURISDICTION]`, `[EFFECTIVE DATE]`). **They are not legal advice** -
-review and tailor them before relying on them.
+`[GOVERNING JURISDICTION]`, `[EFFECTIVE DATE]`). **They are not legal advice.**
+Review and tailor them before relying on them.

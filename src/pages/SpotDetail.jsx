@@ -11,6 +11,7 @@ import { Comments } from '../components/Comments'
 import { ReportButton } from '../components/ReportButton'
 import { Modal } from '../components/Modal'
 import { Spinner, EmptyState, PriceScale, CategoryChip, TagChip, AvailabilityChip } from '../components/bits'
+import { isFoodCategory } from '../lib/constants'
 import { formatWhen } from '../lib/time'
 
 export function SpotDetail() {
@@ -64,6 +65,7 @@ export function SpotDetail() {
 
   const isOwner = user?.uid === spot.createdBy
   const links = spot.orderLinks || {}
+  const food = isFoodCategory(spot.category)
 
   return (
     <div className="container page detail">
@@ -138,7 +140,7 @@ export function SpotDetail() {
           </div>
 
           <div className="card side-card">
-            <h3>Order & directions</h3>
+            <h3>Find it</h3>
             <div className="stack" style={{ gap: 10 }}>
               <a className="btn btn-block" href={mapsSearchUrl(spot.address)} target="_blank" rel="noreferrer noopener">
                 🗺️ Open in Google Maps
@@ -146,12 +148,17 @@ export function SpotDetail() {
               <a className="btn btn-block" href={mapsDirectionsUrl(spot.address)} target="_blank" rel="noreferrer noopener">
                 🧭 Directions
               </a>
-              {links.doordash && (
+              {links.website && (
+                <a className="btn btn-block" href={links.website} target="_blank" rel="noreferrer noopener">
+                  🔗 Website
+                </a>
+              )}
+              {food && links.doordash && (
                 <a className="btn btn-block" href={links.doordash} target="_blank" rel="noreferrer noopener">
                   🚗 Order on DoorDash
                 </a>
               )}
-              {links.ubereats && (
+              {food && links.ubereats && (
                 <a className="btn btn-block" href={links.ubereats} target="_blank" rel="noreferrer noopener">
                   🛵 Order on Uber Eats
                 </a>
@@ -159,7 +166,7 @@ export function SpotDetail() {
             </div>
           </div>
 
-          {spot.availability?.length > 0 && (
+          {food && spot.availability?.length > 0 && (
             <div className="card side-card">
               <h3>Ways to get it</h3>
               <div className="chip-row">

@@ -38,7 +38,7 @@ export function Spinner({ label = 'Loading…' }) {
   return (
     <div className="center" style={{ padding: 40 }} role="status">
       <div className="spinner-dot" aria-hidden="true">
-        🍳
+        💬
       </div>
       <p className="muted" style={{ marginTop: 12 }}>
         {label}
@@ -47,7 +47,7 @@ export function Spinner({ label = 'Loading…' }) {
   )
 }
 
-export function EmptyState({ emoji = '🍽️', title, children }) {
+export function EmptyState({ emoji = '📭', title, children }) {
   return (
     <div className="empty-state">
       <div className="big" aria-hidden="true">

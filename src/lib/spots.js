@@ -19,7 +19,7 @@ const spotsCol = collection(db, 'spots')
 
 /**
  * Free geocoding via OpenStreetMap Nominatim. One request per submit.
- * Returns { lat, lng } or null on any failure - the spot still saves.
+ * Returns { lat, lng } or null on any failure. The spot still saves.
  */
 export async function geocodeAddress(address) {
   if (!address || !address.trim()) return null
@@ -62,6 +62,8 @@ export async function createSpot(data, user) {
       : await geocodeAddress(data.address)
 
   const orderLinks = {}
+  if (data.orderLinks?.website)
+    orderLinks.website = normalizeUrl(data.orderLinks.website)
   if (data.orderLinks?.doordash)
     orderLinks.doordash = normalizeUrl(data.orderLinks.doordash)
   if (data.orderLinks?.ubereats)
@@ -97,6 +99,8 @@ export async function createSpot(data, user) {
 
 export async function updateSpot(spotId, data) {
   const orderLinks = {}
+  if (data.orderLinks?.website)
+    orderLinks.website = normalizeUrl(data.orderLinks.website)
   if (data.orderLinks?.doordash)
     orderLinks.doordash = normalizeUrl(data.orderLinks.doordash)
   if (data.orderLinks?.ubereats)

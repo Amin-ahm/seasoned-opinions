@@ -20,7 +20,7 @@ const EMPTY = {
   priceScale: 2,
   tags: [],
   availability: [],
-  orderLinks: { doordash: '', ubereats: '' },
+  orderLinks: { website: '', doordash: '', ubereats: '' },
   whatsGood: '',
   whatToSkip: '',
   photoUrl: '',
@@ -37,6 +37,7 @@ export function spotToForm(spot) {
     tags: spot.tags || [],
     availability: spot.availability || [],
     orderLinks: {
+      website: spot.orderLinks?.website || '',
       doordash: spot.orderLinks?.doordash || '',
       ubereats: spot.orderLinks?.ubereats || '',
     },
@@ -180,23 +181,25 @@ export function SpotForm({ initial, submitLabel = 'Add spot', onSubmit, busy }) 
         </div>
       </div>
 
-      <div className="field">
-        <label>Availability</label>
-        <div className="chip-row">
-          {availOptions.map((a) => (
-            <button
-              type="button"
-              key={a.value}
-              className={`chip ${
-                form.availability.includes(a.value) ? 'is-active' : ''
-              }`}
-              onClick={() => toggle('availability', a.value)}
-            >
-              {a.emoji} {a.label}
-            </button>
-          ))}
+      {food && (
+        <div className="field">
+          <label>Ways to get it</label>
+          <div className="chip-row">
+            {availOptions.map((a) => (
+              <button
+                type="button"
+                key={a.value}
+                className={`chip ${
+                  form.availability.includes(a.value) ? 'is-active' : ''
+                }`}
+                onClick={() => toggle('availability', a.value)}
+              >
+                {a.emoji} {a.label}
+              </button>
+            ))}
+          </div>
         </div>
-      </div>
+      )}
 
       <div className="field">
         <label>Tags</label>
@@ -260,6 +263,19 @@ export function SpotForm({ initial, submitLabel = 'Add spot', onSubmit, busy }) 
           />
           <p className="hint">One per line.</p>
         </div>
+      </div>
+
+      <div className="field">
+        <label htmlFor="website">Website / booking link</label>
+        <input
+          id="website"
+          type="url"
+          value={form.orderLinks.website}
+          onChange={(e) =>
+            set('orderLinks', { ...form.orderLinks, website: e.target.value })
+          }
+          placeholder="https://… (optional)"
+        />
       </div>
 
       {food && (

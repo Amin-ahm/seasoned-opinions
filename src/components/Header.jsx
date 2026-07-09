@@ -16,7 +16,7 @@ export function Header() {
       <div className="container header-inner">
         <Link to="/" className="brand" onClick={() => setMenuOpen(false)}>
           <span className="brand-emoji" aria-hidden="true">
-            🧂
+            💬
           </span>
           <span className="brand-name">Seasoned Opinions</span>
           <span className="brand-by">by Red Team</span>

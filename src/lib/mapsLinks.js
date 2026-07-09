@@ -1,4 +1,4 @@
-// Google Maps deep links built from plain URLs - no Maps JavaScript API,
+// Google Maps deep links built from plain URLs, no Maps JavaScript API,
 // no API key, no billing. We only ever link out.
 
 export function mapsSearchUrl(address) {

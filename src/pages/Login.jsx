@@ -25,15 +25,15 @@ export function Login() {
       <div className="login-card card">
         <div className="brand brand-lg">
           <span className="brand-emoji" aria-hidden="true">
-            🧂
+            💬
           </span>
           <span className="brand-name">Seasoned Opinions</span>
         </div>
-        <h1>Where should you eat?</h1>
+        <h1>What's actually good?</h1>
         <p className="muted login-tagline">
-          The crowdsourced guide to the restaurants, coffee shops, and bakeries
-          near work, with honest ratings, what's good, what to skip, and a
-          "Decide for Me" button for when you can't pick.
+          Your team's recommendations in one place. Places, side hustles, tools
+          and skills, and news, with honest ratings and comments so you always
+          know what's worth it.
         </p>
 
         {!isFirebaseConfigured && (

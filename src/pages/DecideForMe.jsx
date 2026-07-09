@@ -9,6 +9,7 @@ import { EmptyState, PriceScale, CategoryChip } from '../components/bits'
 import { StarDisplay } from '../components/StarRating'
 import { DEFAULT_FILTERS, filterSpots, decidePick } from '../lib/filters'
 import { hasUserRated } from '../lib/interactions'
+import { CATEGORY_MAP } from '../lib/constants'
 
 const DecideWheel = lazy(() => import('../components/three/DecideWheel'))
 
@@ -18,7 +19,7 @@ const MODES = [
   { value: 'new', label: '✨ Something New', hint: 'Only spots you haven’t rated yet.' },
 ]
 
-const CATEGORY_EMOJI = { restaurant: '🍜', coffee: '☕', bakery: '🥐', other: '🍽️' }
+const catEmoji = (c) => (CATEGORY_MAP[c] || CATEGORY_MAP.other)?.emoji || '📍'
 
 export function DecideForMe() {
   const { spots } = useSpots()
@@ -75,7 +76,7 @@ export function DecideForMe() {
     const idx = display.findIndex((s) => s.id === pick.id)
 
     setSegments(
-      display.map((s) => ({ name: s.name, emoji: CATEGORY_EMOJI[s.category] || '🍽️' }))
+      display.map((s) => ({ name: s.name, emoji: catEmoji(s.category) }))
     )
     setWinnerIndex(idx)
     setWinner(pick)
@@ -155,7 +156,7 @@ export function DecideForMe() {
             {settled && winner && (
               <div className="winner-card">
                 <div className="winner-emoji" aria-hidden="true">
-                  {CATEGORY_EMOJI[winner.category] || '🍽️'}
+                  {catEmoji(winner.category)}
                 </div>
                 <h2>{winner.name}</h2>
                 <div className="row row-wrap center-row" style={{ gap: 10, justifyContent: 'center' }}>

@@ -102,7 +102,7 @@ export function decidePick(candidates, mode, ratedIds, rand = Math.random()) {
     return pool[pool.length - 1]
   }
 
-  // "surprise" and "new" - uniform random.
+  // "surprise" and "new", uniform random.
   const idx = Math.floor(rand * pool.length)
   return pool[Math.min(idx, pool.length - 1)]
 }

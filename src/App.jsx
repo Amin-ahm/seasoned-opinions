@@ -18,8 +18,8 @@ import { NotFound } from './pages/NotFound'
 function Splash() {
   return (
     <div className="splash">
-      <div className="splash-emoji" aria-hidden="true">🧂</div>
-      <p className="muted">Warming up the kitchen…</p>
+      <div className="splash-emoji" aria-hidden="true">💬</div>
+      <p className="muted">Warming up…</p>
     </div>
   )
 }

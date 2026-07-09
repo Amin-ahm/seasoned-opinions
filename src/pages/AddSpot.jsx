@@ -15,24 +15,24 @@ export function AddSpot() {
     setBusy(true)
     try {
       const id = await createSpot(data, { uid: user.uid, displayName })
-      showToast('Spot added! 🎉')
+      showToast('Place added! 🎉')
       navigate(`/spot/${id}`)
     } catch (e) {
       console.error(e)
-      showToast('Could not save the spot. Try again.')
+      showToast('Could not save the place. Try again.')
       setBusy(false)
     }
   }
 
   return (
     <div className="container page narrow">
-      <Link to="/" className="link-btn back-link">← All spots</Link>
-      <h1>Add a Spot</h1>
+      <Link to="/" className="link-btn back-link">← All places</Link>
+      <h1>Add a place</h1>
       <p className="muted">
-        Share a place worth knowing about. Geocoding and the Google Maps link
-        happen automatically.
+        Search for a place to auto-fill the details, or enter them by hand. The
+        map location and Google Maps link are handled for you.
       </p>
-      <SpotForm submitLabel="Add spot" onSubmit={handleSubmit} busy={busy} />
+      <SpotForm submitLabel="Add place" onSubmit={handleSubmit} busy={busy} />
     </div>
   )
 }

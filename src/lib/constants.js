@@ -1,21 +1,30 @@
 // Shared vocabulary used across forms, filters and cards.
 
+// A broad, non-exhaustive set. "Other" plus free-text tags cover anything not
+// listed, so the app is never boxed into these specific types.
 export const CATEGORIES = [
-  { value: 'restaurant', label: 'Restaurant', emoji: '🍜' },
+  { value: 'restaurant', label: 'Restaurant', emoji: '🍽️' },
   { value: 'coffee', label: 'Coffee', emoji: '☕' },
   { value: 'bakery', label: 'Bakery', emoji: '🥐' },
-  { value: 'mechanic', label: 'Mechanic', emoji: '🔧' },
-  { value: 'fishing', label: 'Fishing spot', emoji: '🎣' },
-  { value: 'flowers', label: 'Flower shop', emoji: '💐' },
-  { value: 'farmer', label: 'Farmer / market', emoji: '🌾' },
+  { value: 'bar', label: 'Bar', emoji: '🍸' },
   { value: 'grocery', label: 'Grocery', emoji: '🛒' },
+  { value: 'shopping', label: 'Shopping', emoji: '🛍️' },
+  { value: 'mechanic', label: 'Mechanic', emoji: '🔧' },
   { value: 'services', label: 'Services', emoji: '🛠️' },
+  { value: 'beauty', label: 'Hair & beauty', emoji: '💇' },
+  { value: 'health', label: 'Health', emoji: '🩺' },
+  { value: 'fitness', label: 'Fitness', emoji: '💪' },
+  { value: 'flowers', label: 'Flowers', emoji: '💐' },
+  { value: 'farmer', label: 'Farm / market', emoji: '🌾' },
+  { value: 'outdoors', label: 'Outdoors', emoji: '🌲' },
+  { value: 'fishing', label: 'Fishing spot', emoji: '🎣' },
+  { value: 'entertainment', label: 'Entertainment', emoji: '🎬' },
   { value: 'other', label: 'Other', emoji: '📍' },
 ]
 
 // Food places show menu-style fields (what's good/skip) and food ordering
 // options; other place types hide those.
-export const FOOD_CATEGORIES = ['restaurant', 'coffee', 'bakery']
+export const FOOD_CATEGORIES = ['restaurant', 'coffee', 'bakery', 'bar']
 
 export function isFoodCategory(value) {
   return FOOD_CATEGORIES.includes(value)
@@ -37,7 +46,7 @@ export const AVAILABILITY_MAP = Object.fromEntries(
   AVAILABILITY.map((a) => [a.value, a])
 )
 
-// Suggested tags - users may also type their own.
+// Suggested tags. Users may also type their own.
 export const SUGGESTED_TAGS = [
   'vegan',
   'vegetarian',

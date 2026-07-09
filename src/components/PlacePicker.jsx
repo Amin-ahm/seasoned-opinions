@@ -83,7 +83,7 @@ export function PlacePicker({ onSelect }) {
       {open && (
         <ul className="place-results" role="listbox">
           {results.length === 0 && !loading ? (
-            <li className="place-empty">No matches — you can type details in below.</li>
+            <li className="place-empty">No matches. You can type the details in below.</li>
           ) : (
             results.map((p, i) => (
               <li key={i}>

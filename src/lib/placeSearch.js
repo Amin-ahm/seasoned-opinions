@@ -1,39 +1,64 @@
-// Free place search via Photon (photon.komoot.io) over OpenStreetMap data.
-// No API key, no billing. Type-ahead friendly (Photon is built for it).
+// Free place search over OpenStreetMap data. No API key, no billing.
+// Primary source is Photon (built for type-ahead); if it comes up short we
+// fall back to Nominatim, which sometimes indexes businesses Photon misses.
 //
-// Results are limited to Canada and biased toward the GTA. To include the US
-// or elsewhere, add codes to COUNTRY_CODES; to bias a different area, change
-// BIAS. Set COUNTRY_CODES to [] to allow anywhere.
+// Results prefer Canada and are biased toward the GTA. To include the US or
+// elsewhere, add codes to COUNTRY_CODES (or set it to [] for anywhere) and/or
+// change BIAS.
 const COUNTRY_CODES = ['ca']
 const BIAS = { lat: 43.72, lon: -79.42 } // Greater Toronto Area
 
 export async function searchPlaces(queryStr, signal) {
   const q = (queryStr || '').trim()
-  if (q.length < 3) return []
+  if (q.length < 2) return []
+
+  let results = await fromPhoton(q, signal)
+  if (results.length < 3) {
+    const extra = await fromNominatim(q, signal)
+    results = dedupe([...results, ...extra])
+  }
+  return results.slice(0, 12)
+}
+
+async function fromPhoton(q, signal) {
   const url =
     `https://photon.komoot.io/api/?q=${encodeURIComponent(q)}` +
-    `&limit=8&lang=en&lat=${BIAS.lat}&lon=${BIAS.lon}`
+    `&limit=15&lang=en&lat=${BIAS.lat}&lon=${BIAS.lon}`
   try {
     const res = await fetch(url, { signal })
     if (!res.ok) return []
     const data = await res.json()
-    const feats = (data.features || []).filter((f) => {
-      if (!COUNTRY_CODES.length) return true
-      const cc = (f.properties?.countrycode || '').toLowerCase()
-      return COUNTRY_CODES.includes(cc)
-    })
-    return feats.map(toPlace).filter((p) => p.name)
+    const all = (data.features || []).map(fromPhotonFeature).filter((p) => p.name)
+    const inCountry = COUNTRY_CODES.length
+      ? all.filter((p) => COUNTRY_CODES.includes((p._cc || '').toLowerCase()))
+      : all
+    // If the country filter wiped everything out, show what we found anyway.
+    return inCountry.length ? inCountry : all
   } catch {
     return []
   }
 }
 
-function toPlace(f) {
+async function fromNominatim(q, signal) {
+  const cc = COUNTRY_CODES.length ? `&countrycodes=${COUNTRY_CODES.join(',')}` : ''
+  const url =
+    `https://nominatim.openstreetmap.org/search?format=jsonv2&addressdetails=1` +
+    `&limit=10${cc}&q=${encodeURIComponent(q)}`
+  try {
+    const res = await fetch(url, { signal, headers: { Accept: 'application/json' } })
+    if (!res.ok) return []
+    const data = await res.json()
+    return (Array.isArray(data) ? data : []).map(fromNominatimResult).filter((p) => p.name)
+  } catch {
+    return []
+  }
+}
+
+function fromPhotonFeature(f) {
   const p = f.properties || {}
   const [lon, lat] = f.geometry?.coordinates || []
   const streetLine = [p.housenumber, p.street].filter(Boolean).join(' ')
-  const name =
-    p.name || streetLine || p.city || p.town || p.village || 'Unknown place'
+  const name = p.name || streetLine || p.city || p.town || p.village || 'Unknown place'
   const address = [
     streetLine,
     p.city || p.town || p.village || p.district,
@@ -48,20 +73,53 @@ function toPlace(f) {
     address,
     lat: typeof lat === 'number' ? lat : null,
     lng: typeof lon === 'number' ? lon : null,
-    category: guessCategory(p),
+    category: guessCategory(p.osm_value),
+    _cc: p.countrycode,
   }
 }
 
-function guessCategory(p) {
-  const v = p.osm_value
+function fromNominatimResult(r) {
+  const a = r.address || {}
+  const name =
+    r.name ||
+    a.amenity ||
+    a.shop ||
+    [a.house_number, a.road].filter(Boolean).join(' ') ||
+    (r.display_name || '').split(',')[0]
+  return {
+    name,
+    address: r.display_name || '',
+    lat: parseFloat(r.lat),
+    lng: parseFloat(r.lon),
+    category: guessCategory(r.type),
+    _cc: a.country_code,
+  }
+}
+
+function guessCategory(v) {
   if (v === 'cafe' || v === 'coffee') return 'coffee'
   if (v === 'bakery') return 'bakery'
-  if (v === 'restaurant' || v === 'fast_food' || v === 'food_court')
-    return 'restaurant'
+  if (v === 'restaurant' || v === 'fast_food' || v === 'food_court') return 'restaurant'
+  if (v === 'bar' || v === 'pub') return 'bar'
   if (v === 'florist') return 'flowers'
   if (v === 'car_repair') return 'mechanic'
-  if (v === 'farm' || v === 'greengrocer' || v === 'marketplace')
-    return 'farmer'
+  if (v === 'farm' || v === 'greengrocer' || v === 'marketplace') return 'farmer'
   if (v === 'supermarket' || v === 'convenience') return 'grocery'
+  if (v === 'hairdresser' || v === 'beauty') return 'beauty'
+  if (v === 'fitness_centre' || v === 'gym') return 'fitness'
+  if (v === 'cinema' || v === 'theatre') return 'entertainment'
   return 'other'
+}
+
+function dedupe(list) {
+  const seen = new Set()
+  const out = []
+  for (const p of list) {
+    const key = `${p.name}|${Math.round((p.lat || 0) * 1000)}|${Math.round((p.lng || 0) * 1000)}`
+    if (!seen.has(key)) {
+      seen.add(key)
+      out.push(p)
+    }
+  }
+  return out
 }

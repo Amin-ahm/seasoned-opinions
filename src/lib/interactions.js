@@ -1,4 +1,4 @@
-// Votes, ratings and comments — shared across every section (places, market,
+// Votes, ratings and comments, shared across every section (places, market,
 // software, news) by passing the parent collection name (`col`). Defaults to
 // 'spots' so the original Places code keeps working unchanged.
 //
@@ -93,7 +93,7 @@ export function subscribeMyRating(itemId, uid, cb, col = 'spots') {
   )
 }
 
-/** For "Something New" mode — which items has this user already rated? */
+/** For "Something New" mode, which items has this user already rated? */
 export async function hasUserRated(itemId, uid, col = 'spots') {
   const snap = await getDoc(doc(db, col, itemId, 'ratings', uid))
   return snap.exists()

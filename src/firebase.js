@@ -1,13 +1,13 @@
 // Firebase initialization.
 //
-// The Firebase web config is read ENTIRELY from Vite env vars — nothing is
+// The Firebase web config is read ENTIRELY from Vite env vars, nothing is
 // hardcoded here. Provide the values via:
 //   - local dev: a `.env.local` file (gitignored) with the VITE_FIREBASE_* keys
 //   - CI / GitHub Pages: repository Actions secrets of the same names, passed
 //     through in .github/workflows/deploy.yml
 //
 // Note: a web app's Firebase config is inherently visible in the shipped JS
-// bundle (the browser needs it to reach Firebase) — env vars keep it out of the
+// bundle (the browser needs it to reach Firebase), env vars keep it out of the
 // source repo, not out of the client. Real security comes from the Firestore
 // rules (firestore.rules) and the Auth authorized-domains list.
 import { initializeApp } from 'firebase/app'

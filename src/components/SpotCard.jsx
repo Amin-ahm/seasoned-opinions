@@ -6,6 +6,7 @@ import {
   AvailabilityChip,
 } from './bits'
 import { StarDisplay } from './StarRating'
+import { CATEGORY_MAP } from '../lib/constants'
 
 export function SpotCard({ spot }) {
   return (
@@ -59,5 +60,5 @@ export function SpotCard({ spot }) {
 }
 
 function categoryEmoji(cat) {
-  return { restaurant: '🍜', coffee: '☕', bakery: '🥐' }[cat] || '🍽️'
+  return (CATEGORY_MAP[cat] || CATEGORY_MAP.other)?.emoji || '📍'
 }

@@ -35,7 +35,7 @@ export function Terms() {
       <p>
         You represent and warrant that you own or have the rights to any image
         URL, text, and links you post. You must{' '}
-        <strong>not</strong> post third-party copyrighted images - including
+        <strong>not</strong> post third-party copyrighted images, including
         photos copied from Google Maps, DoorDash, Uber Eats, or other websites.
         Reviews and ratings are personal opinions, not statements of fact.
       </p>

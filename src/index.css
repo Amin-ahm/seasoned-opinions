@@ -1,5 +1,5 @@
 /* ============================================================
-   Seasoned Opinions - global styles & design system
+   Seasoned Opinions, global styles and design system
    Art direction: whimsical, cartoony, warm & friendly.
    Mobile-first. All motion respects prefers-reduced-motion.
    ============================================================ */
@@ -30,7 +30,7 @@
   --skip: #ff6b6b;
   --star: #ffb703;
 
-  /* Radii - chunky and rounded */
+  /* Radii, chunky and rounded */
   --r-sm: 10px;
   --r-md: 16px;
   --r-lg: 24px;

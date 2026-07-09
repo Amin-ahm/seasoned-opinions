@@ -5,7 +5,7 @@ export function Footer() {
     <footer className="site-footer">
       <div className="container footer-inner">
         <span className="muted">
-          🧂 Seasoned Opinions - honest takes from your coworkers.
+          💬 Seasoned Opinions. Real recommendations from your team.
         </span>
         <nav className="footer-links">
           <Link to="/privacy">Privacy Policy</Link>

@@ -5,20 +5,14 @@ import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
 import { useSpots } from '../hooks/useSpots'
 import { Spinner, EmptyState } from '../components/bits'
-import { priceString } from '../lib/constants'
+import { priceString, CATEGORY_MAP } from '../lib/constants'
 
-const CATEGORY_EMOJI = {
-  restaurant: '🍜',
-  coffee: '☕',
-  bakery: '🥐',
-  other: '🍽️',
-}
-
-// Whimsical emoji pins via divIcon - no external marker image assets needed.
+// Whimsical emoji pins via divIcon, no external marker image assets needed.
 function emojiIcon(category) {
+  const emoji = (CATEGORY_MAP[category] || CATEGORY_MAP.other)?.emoji || '📍'
   return L.divIcon({
     className: 'emoji-pin',
-    html: `<div class="emoji-pin-inner">${CATEGORY_EMOJI[category] || '📍'}</div>`,
+    html: `<div class="emoji-pin-inner">${emoji}</div>`,
     iconSize: [40, 40],
     iconAnchor: [20, 38],
     popupAnchor: [0, -36],

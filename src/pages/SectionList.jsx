@@ -105,7 +105,7 @@ export function SectionList() {
       ) : visible.length === 0 ? (
         items.length === 0 ? (
           <EmptyState emoji={section.emoji} title={`Nothing here yet`}>
-            Be the first — <Link to={`/s/${section.key}/add`}>{section.addCta.toLowerCase()}</Link>.
+            Be the first to <Link to={`/s/${section.key}/add`}>{section.addCta.toLowerCase()}</Link>.
           </EmptyState>
         ) : (
           <EmptyState emoji="🔍" title="Nothing matches">Try a different search or category.</EmptyState>

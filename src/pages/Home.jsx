@@ -67,15 +67,15 @@ export function Home() {
     <div className="container page">
       <section className="home-hero">
         <div className="home-hero-text">
-          <h1>Good taste, crowdsourced.</h1>
+          <h1>The good stuff, crowdsourced.</h1>
           <p className="muted">
-            Real opinions from your coworkers — restaurants, coffee, bakeries,
-            mechanics, fishing spots, flower shops, and more. Rate the winners,
-            warn about the duds, and let the wheel decide when you can't.
+            Real recommendations from your coworkers on the places worth going,
+            the people worth hiring, and the things worth trying. Rate the
+            winners, flag the duds, and let the wheel decide when you can't.
           </p>
           <div className="row row-wrap" style={{ gap: 10 }}>
             <Link to="/add" className="btn btn-primary">
-              ＋ Add a Spot
+              ＋ Add a place
             </Link>
             <Link to="/decide" className="btn btn-grape">
               🎡 Decide for Me
@@ -139,9 +139,9 @@ export function Home() {
         </div>
       ) : visible.length === 0 ? (
         spots.length === 0 ? (
-          <EmptyState emoji="🍽️" title="No spots yet">
-            Be the first to add a place -{' '}
-            <Link to="/add">add a spot</Link> and get the list started.
+          <EmptyState emoji="📍" title="No places yet">
+            Be the first. <Link to="/add">Add a place</Link> and get the list
+            started.
           </EmptyState>
         ) : (
           <EmptyState emoji="🔍" title="Nothing matches those filters">
